@@ -51,6 +51,17 @@ set cpo&vim
 
   " END Navigation }}}
 
+  " Folding -------------------------------------------------------------- {{{
+
+    nnoremap <expr> zo notes#folding#apply_fold_operation('zo')
+    nnoremap <expr> zO notes#folding#apply_fold_operation('zO')
+    nnoremap <expr> zc notes#folding#apply_fold_operation('zc')
+    nnoremap <expr> zC notes#folding#apply_fold_operation('zC')
+    nnoremap <expr> za notes#folding#apply_fold_operation('za')
+    nnoremap <expr> zA notes#folding#apply_fold_operation('zA')
+
+  " END Folding }}}
+
   " Editing -------------------------------------------------------------- {{{
 
     nnoremap <buffer> <Plug>(NotesNextActionKeyword) :call notes#commands#next_action_keyword(v:false)<cr>

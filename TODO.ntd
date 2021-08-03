@@ -73,9 +73,22 @@ Folding
 - CLR Rely on indent foldmethod or provide custom foldexpr?
 - The folded item should still have syntax highlighting (the Bulletline is
   still syntax highlighted, folding starts below it)
+- [x] Mappings should be provided for all fold open/close commands to allow
+  executing them on the visible line (since the fold starts below them).
+  Therefore if the cursor is on a bullet line, a 'zo' would open the fold
+  /below/ it.
+  This needs to check whether there is a fold below it. If not, do nothing
+- I think a special foldexpr would be handy. It allows us to fold the
+  content betwen section headers even if it starts are at the beginning of
+  the line (like in this document).
+  Also it would allow us to fold leading and trailing empty lines along
+  with the actual folds content. The indent fold methods leaves these
+  intact and does not fold them.
 
 
 Complementing plugins
 =====================
 - dhruvasagar/vim-table-mode
 - dkarter/bullets.vim
+
+
