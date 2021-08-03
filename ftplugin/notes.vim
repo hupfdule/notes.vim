@@ -52,11 +52,19 @@ set cpo&vim
   " END Navigation }}}
 
   " Editing -------------------------------------------------------------- {{{
+
     nnoremap <buffer> <Plug>(NotesNextActionKeyword) :call notes#commands#next_action_keyword(v:false)<cr>
     nnoremap <buffer> <Plug>(NotesPrevActionKeyword) :call notes#commands#next_action_keyword(v:true)<cr>
     " TODO: Allow disabling of mappings
     nmap <buffer> <S-Right> <Plug>(NotesNextActionKeyword)
     nmap <buffer> <S-Left>  <Plug>(NotesPrevActionKeyword)
+
+    nnoremap <buffer> <Plug>(NotesNextPrio) :call notes#commands#next_priority(v:false)<cr>
+    nnoremap <buffer> <Plug>(NotesPrevPrio) :call notes#commands#next_priority(v:true)<cr>
+    " TODO: Allow disabling of mappings
+    nmap <buffer> <S-Up> <Plug>(NotesNextPrio)
+    nmap <buffer> <S-Down>  <Plug>(NotesPrevPrio)
+
   " END Editing }}}
 
   " Help ----------------------------------------------------------------- {{{

@@ -57,9 +57,9 @@ Textobjects
 Syntax highlighting
 ===================
 * TODO Refine colors
- - [x] Sane default colors
- - [ ] Support for gruvbox
- - [ ] Differentiate more between action items
+  - [x] Sane default colors
+  - [ ] Support for gruvbox
+  - [ ] Differentiate more between action items
 
 
 Keybindings

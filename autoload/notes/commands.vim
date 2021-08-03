@@ -13,6 +13,7 @@ let s:regex_bulletline .= '\)\?'
 " TODO:  Allow multiple sets of keywords.
 let s:action_keywords = ['TODO', 'WORK', 'DONE', 'CANC']
 
+let s:priorities = ['[#C]', '[#B]', '[#A]']
 
 ""
 " Select the next/prev action keyword for the current bullet line.
@@ -21,7 +22,7 @@ let s:action_keywords = ['TODO', 'WORK', 'DONE', 'CANC']
 " the action keyword will be removed.
 " If there is no current action keyword and we select the next/previous one
 " the first/last one will be selected.
-
+"
 " If {backwards} is 'v:true' the previous keyword will be selected,
 " otherwise the next one.
 "
@@ -33,7 +34,7 @@ function! notes#commands#next_action_keyword(backwards) abort
     return
   endif
 
-  " Search for the current action keyword
+  " Search for the current priority
   for keyword in s:action_keywords
     let l:current_keyword = matchstrpos(getline('.'), keyword)
     if l:current_keyword !=# ['', -1, -1]
@@ -58,13 +59,79 @@ function! notes#commands#next_action_keyword(backwards) abort
       let l:next_keyword = get(s:action_keywords, l:current_keyword_idx + (a:backwards ? -1 : 1))
     endif
 
-    echom l:current_keyword[0] . ' ⇒ ' . l:next_keyword
-    if l:next_keyword ==# '0'
+    if l:next_keyword is 0
       " Remove the keyword if it was the last/first one
       let l:new_line = substitute(getline('.'), keyword . '\s\+', '', '')
     else
       " Replace the keyword with the next/prev one
       let l:new_line = substitute(getline('.'), keyword, l:next_keyword, '')
+    endif
+  endif
+
+  call setline('.', l:new_line)
+endfunction
+
+
+""
+" Select the next higher/lower priority for the current bullet line.
+"
+" If we are already at the lowest/highest priority and select the next
+" lower/higher one the priority will be removed.
+" If there is no current priority and we select the next higher/lower one
+" the loest/highest one will be selected.
+"
+" If {backwards} is 'v:true' the next lower priority will be selected,
+" otherwise the next higher one.
+"
+" @param {backwards} if 'v:true' the jump will be executed backwards
+function! notes#commands#next_priority(backwards) abort
+  " Abort if the current line is not a bullet line
+  let l:line = getline('.')
+  if l:line !~# s:regex_bulletline
+    return
+  endif
+
+  " Search for the current priority
+  for prio in s:priorities
+    let l:current_prio = matchstrpos(getline('.'), escape(prio, '[]'))
+    if l:current_prio !=# ['', -1, -1]
+      break
+    endif
+  endfor
+
+  " Do the actual replacement/deletion/addition of the priority
+  if l:current_prio ==# ['', -1, -1]
+    " If no current priority is found, add the lowest/highest one
+    " Inser the prio either directly after the bullet point or after the
+    " action keyword (if any exists)
+    let l:insertpos = matchend(getline('.'), s:regex_bulletline)
+    for keyword in s:action_keywords
+      let l:insertpos2 = matchend(getline('.'),  '^\s*' . keyword . '\s*', l:insertpos)
+      if l:insertpos2 > -1
+         let l:insertpos = l:insertpos2
+         break
+      endif
+    endfor
+
+    let l:next_prio = get(s:priorities, (a:backwards ? -1 : 0))
+    let l:new_line = getline('.')[0:l:insertpos-1] . l:next_prio . ' ' . getline('.')[l:insertpos:]
+  else
+    " Otherwise select the next one
+    let l:current_prio_idx = index(s:priorities, l:current_prio[0])
+    if a:backwards && l:current_prio_idx == 0
+      let l:next_prio = 0
+    elseif !a:backwards && l:current_prio_idx == len(s:priorities)-1
+      let l:next_prio = 0
+    else
+      let l:next_prio = get(s:priorities, l:current_prio_idx + (a:backwards ? -1 : 1))
+    endif
+
+    if l:next_prio is 0
+      " Remove the prio if it was the highest/lowest one
+      let l:new_line = substitute(getline('.'), escape(prio, '[]'). '\s\+', '', '')
+    else
+      " Replace the prio with the next higher/lower one
+      let l:new_line = substitute(getline('.'), escape(prio, '[]'), l:next_prio, '')
     endif
   endif
 
