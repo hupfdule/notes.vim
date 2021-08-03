@@ -13,6 +13,7 @@ let s:regex_bulletline .= '\)\?'
 " TODO:  Allow multiple sets of keywords.
 let s:action_keywords = ['TODO', 'WORK', 'DONE', 'CANC']
 
+
 ""
 " Select the next/prev action keyword for the current bullet line.
 "
@@ -26,12 +27,6 @@ let s:action_keywords = ['TODO', 'WORK', 'DONE', 'CANC']
 "
 " @param {backwards} if 'v:true' the jump will be executed backwards
 function! notes#commands#next_action_keyword(backwards) abort
-  " TODO:
-  "       - Abort if this is not a bullet line
-  "       - Search for current action keyword
-  "       - Identify the next keyword
-  "       - Add/Remove/Replace keyword in current line
-
   " Abort if the current line is not a bullet line
   let l:line = getline('.')
   if l:line !~# s:regex_bulletline
@@ -46,29 +41,27 @@ function! notes#commands#next_action_keyword(backwards) abort
     endif
   endfor
 
-  echom ' current keywo ' . l:current_keyword[0]
-
+  " Do the actual replacement/deletion/addition of the action keyword
   if l:current_keyword ==# ['', -1, -1]
-    echom 'oben'
     " If no current keyword is found, add the first/last one
     let l:insertpos = matchend(getline('.'), s:regex_bulletline)
     let l:next_keyword = get(s:action_keywords, (a:backwards ? -1 : 0))
     let l:new_line = getline('.')[0:l:insertpos-1] . l:next_keyword . ' ' . getline('.')[l:insertpos:]
   else
-    echom 'ohne'
     " Otherwise select the next one
     let l:current_keyword_idx = index(s:action_keywords, l:current_keyword[0])
-    let l:next_keyword = get(s:action_keywords, l:current_keyword_idx + (a:backwards ? -1 : 1))
+    if a:backwards && l:current_keyword_idx == 0
+      let l:next_keyword = 0
+    elseif !a:backwards && l:current_keyword_idx == len(s:action_keywords)-1
+      let l:next_keyword = 0
+    else
+      let l:next_keyword = get(s:action_keywords, l:current_keyword_idx + (a:backwards ? -1 : 1))
+    endif
 
-    echom '>.> ' . keyword
-    echom '<.< ' . l:next_keyword
-    if l:next_keyword
-      " FIXME: This does not work yet.
-      "        Going forward it inserts '0', going backward it just inserts
-      "        the last one again
+    echom l:current_keyword[0] . ' ⇒ ' . l:next_keyword
+    if l:next_keyword ==# '0'
       " Remove the keyword if it was the last/first one
-      let l:new_line = substitute(getline('.'), keyword, '', '')
-      " TODO: Remove trailing whitespace
+      let l:new_line = substitute(getline('.'), keyword . '\s\+', '', '')
     else
       " Replace the keyword with the next/prev one
       let l:new_line = substitute(getline('.'), keyword, l:next_keyword, '')

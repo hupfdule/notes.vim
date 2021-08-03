@@ -7,7 +7,7 @@ endif
 "syntax match   notesSectionHeading /\(^\s*$\n\|\%^\|^\[.*\]\s*$\)\@<=\S.*\n[=\-]\+\s*$/
 syntax match   notesSectionHeading /^\S.*\n[=\-]\+\s*$/
 
-syntax match   notesBullet         /^\s*\zs\(-\|\*\)\( \[ \]\)\?\ze\s/
+syntax match   notesBullet         /^\s*\zs\(-\|\*\)\( \[[x\ ]\]\)\?\ze\s/
 " FIXME: Wieso klappt das "contained" nicht?
 "syntax keyword notesActionTODO     TODO WORK     contained
 syntax keyword notesActionTODO     TODO containedin=notesSectionHeading
