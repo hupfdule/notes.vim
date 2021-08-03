@@ -1,0 +1,80 @@
+File Structure
+==============
+- Section headers
+  - CLR Allow subsections?
+    → Not at the moment. Maybe later.
+- Bullet points
+  - with action items (TODO, DONE, …)
+  - with Priority
+  - with Tags
+  - with Checkboxes
+- Textblocks
+- Inline formatting
+  - *bold*
+  - /italic/
+  - _underlined_
+- Indentation defines subitems
+
+
+Commands
+========
+
+| Command              | n   | v | i   | Action                                                                  |
+|----------------------+-----+---+-----+-------------------------------------------------------------------------|
+| NoteAddSection       |     |   |     | Add new section header                                                  |
+| NoteNextAction       | S-→ |   | S-→ | Select next action type                                                 |
+| NotePrevAction       | S-← |   | S-← | Select prev action type                                                 |
+| NoteRaisePrio        | S-↑ |   | S-↑ | Raise prio of current bullet line                                       |
+| NoteLowerPrio        | S-↓ |   | S-↓ | Lower prio of current bullet line                                       |
+| NotePromote          | >>  | > | C-t | Promote current line(s) (shift left)                                    |
+| NoteDemote           | <<  | < | C-d | Demote current line(s) (shift right)                                    |
+| NotePromoteRecursive |     |   |     | Promote current line(s) + all subitems                                  |
+| NoteDemoteRecursive  |     |   |     | Demote current line(s) + all subitems                                   |
+| NoteArchive          |     |   |     | Archive current item                                                    |
+| NoteJumpToNext       | ]]  |   |     | Jump to next element on same level                                      |
+| NoteJumpToPrev       | [[  |   |     | Jump to prev element on same level                                      |
+| NoteJumpToNext       | ]}  |   |     | Jump to next element below this one                                     |
+| NoteJumpToPrev       | [{  |   |     | Jump to parent element                                                  |
+| NoteReformat         |     |   |     | Reformat current bulletline (order elements (?), push Tags to column x) |
+| NoteHelp             | g?  |   |     | Display syntax help                                                     |
+
+
+Textobjects
+===========
+
+ | Textobject    | Beschreibung                                                                          |
+ |---------------+---------------------------------------------------------------------------------------|
+ | Sectionheader | Title of a section. A text line with a double underline. /Always/ starts at column 0. |
+ | Section       | Whole section (Header + everything up to next section.                                |
+ | Bulletline    | First line of an action item. Starts with - or *                                      |
+ | Prio          | [#A] Nur in Bulletline                                                                |
+ | Bulletitem    | Everything below a Bulletline up to the next one                                      |
+ | paragraph     | Everything below a Bulletline that is not a bulletline itself                         |
+ | Tag           | :Tag: at the end of a Bulletline                                                      |
+
+
+Syntax highlighting
+===================
+* TODO Refine colors
+ - [ ] Sane default colors
+ - [ ] Support for gruvbox
+ - [ ] Differentiate more between action items
+
+
+Keybindings
+===========
+* TODO Provide helper methods
+* TODO Add default keybindings
+
+
+Folding
+=======
+- CLR Rely on indent foldmethod or provide custom foldexpr?
+- The folded item should still have syntax highlighting (the Bulletline is
+  still syntax highlighted, folding starts below it)
+
+
+Complementing plugins
+=====================
+- dhruvasagar/vim-table-mode
+- dkarter/bullets.vim

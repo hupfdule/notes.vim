@@ -1,0 +1,94 @@
+Sektion                                                  ZR
+=======
+
+- Bulletpunkt 1
+- TODO Bulletpunkt als TODO
+- FDBK Feedbackpunkt mit Tags                      :UWE:HORST:
+- [ ] Checkbox
+* andere Form von Bulletpunkt
+  Diesmal mit *mehr* Text darunter
+
+* Leerzeichen vor Einträgen bleiben erhalten
+
+[#A] [#B] [#C] [#D]
+
+
+Sektion 2
+=========
+
+- Noch ein bullet punkt
+  - Einrückungen bleiben erhalten und gelten als Unterpunkte
+  - So wie dieser hier
+- Jetzt geht's vorne los
+- TODO [#A] Hohe Prio
+
+  Subsektion 1
+  ------------
+
+  - Subsektionen lieber auch einrücken lassen?
+
+
+
+Syntaxtypen
+============
+
+- Sektion (Heading)
+- Bulletline
+  - Action TODO/FDBK/WORK/…
+  - Tags :OTTO:
+  - Checkbox - [ ] 
+  - Prio [#C]
+  - Bullettext
+- Textblock
+
+
+Commands
+========
+
+| Command              | n   | v | i   | Action                                                                  |
+|----------------------+-----+---+-----+-------------------------------------------------------------------------|
+| NoteAddSection       |     |   |     | Erzeugt neuen Sectionheader                                             |
+| NoteNextAction       | S-→ |   | S-→ | nächste Action auswählen                                                |
+| NotePrevAction       | S-← |   | S-← | vorherige Action auswählen                                              |
+| NoteRisePrio         | S-↑ |   | S-↑ | Höhere Prio                                                             |
+| NoteLowerPrio        | S-↓ |   | S-↓ | Niedrigere Prio                                                         |
+| NotePromote          | >>  | > | C-t | Aktuelle Zeile höher Stufen (nach links rücken)                         |
+| NoteDemote           | <<  | < | C-d | Aktuelle Zeile niedriger Stufen (nach rechts rücken)                    |
+| NotePromoteRecursive |     |   |     | Aktuelle Zeile + alle Unterpunkte höher Stufen (nach links rücken)      |
+| NoteDemoteRecursive  |     |   |     | Aktuelle Zeile + alle Unterpunkte niedriger Stufen (nach rechts rücken) |
+| NoteArchive          |     |   |     | Archiviere aktuellen Bullet                                             |
+| NoteJumpToNext       | ]]  |   |     | Nächstes Element, selbe Ebene                                           |
+| NoteJumpToPrev       | [[  |   |     | Vorheriges Element, selbe Ebene                                         |
+| NoteJumpToNext       | ]}  |   |     | Nächstes Element, eine Ebene tiefer                                     |
+| NoteJumpToPrev       | [{  |   |     | Vorheriges Element, eine Ebene höher                                    |
+| NoteReformat         |     |   |     | Reformat current bulletline (order elements (?), push Tags to column x) |
+
+
+Textobjects
+===========
+
+ | Textobject    | Beschreibung                                                                             |
+ |---------------+------------------------------------------------------------------------------------------|
+ | Sectionheader | Überschrift einer Sektion. Eine Zeile mit Doppellinie unterstrichen. /Immer/ ganz links. |
+ | Section       | Ganze Sektion (Header + alles bis zur nächsten Sektion                                   |
+ | Bulletline    | Erste Zeile eines Bulletpunkts. Fängt mit - oder * an                                    |
+ | Bullet        | - oder * am Anfang der Zeile. Leitet Bulletline ein                                      |
+ | Action        | TODO/FDKB/… (nur innerhalb Bulletline?)                                                  |
+ | Prio          | [#A] Nur in Bulletline                                                                   |
+ | Checkbox      | - [ ]                                                                                    |
+ | Bullettext    | Alles unter Bulletline bis zur nächsten                                                  |
+ | paragraph     | Alles unterhalb einer Bulletline (oder auch SEktion) was keine eigene Bulletline         |
+ | Tag           | :Tag: am Ende der Bulletline                                                             |
+ | kursiv        | /kursiv/                                                                                 |
+ | bold          | *bold*                                                                                   |
+ | underlined    | _underlined_                                                                             |
+
+Folding
+=======
+
+- Lasse die Überschrift stehen und folde nur den Text darunter?
+- Bei Bullets sollte der ganze Text darunter weg, aber das Syntaxhighlighting erhalten bleiben
+  ⇒ Foldmethod=indent!!!
+  Blöd nur, dass der Text darunter trotzdem zu sehen ist.
+  Geht auch Ingo Karkats Lösung?: https://stackoverflow.com/a/45956072/572645
+  → Nee. Taugt nichts. Kein Syntaxhighlighting
