@@ -85,7 +85,6 @@ Folding
   with the actual folds content. The indent fold methods leaves these
   intact and does not fold them.
 
-
 Complementing plugins
 =====================
 - dhruvasagar/vim-table-mode
