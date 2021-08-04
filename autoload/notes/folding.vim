@@ -16,7 +16,7 @@
 " @param {fold_operation} the fold operation to execute
 function! notes#folding#apply_fold_operation(fold_operation) abort
   echom  foldlevel(line('.')) . ' :: ' .  foldlevel(line('.') + 1)
-  if foldlevel(line('.')) < foldlevel(line('.') + 1)
+  if foldclosed('.') == -1 && foldlevel(line('.')) < foldlevel(line('.') + 1)
     return 'j' . a:fold_operation . 'k'
   else
     return a:fold_operation

@@ -25,7 +25,7 @@ let s:regex_bulletline .= '\s'                  " a mandatory whitespace charact
 " @param {backwards} if 'v:true' the jump will be executed backwards
 "
 " TODO: How to test mappings in normal, visual and operator pending mode?
-function! notes#motions#jump_to_next_item(count, mode, backwards) abort
+function! notes#motions#jump_to_next_item(count, mode, horizontal, backwards) abort
   " reselect visual area if we should operate in visual mode
   if a:mode ==# 'v'
     normal! gv
@@ -42,14 +42,21 @@ function! notes#motions#jump_to_next_item(count, mode, backwards) abort
     " TODO: Differentiate here whether we are on a section heading or a bullet line?
     "       Or can we ignore this and only respect the indent level?
     "let l:lnum = notes#motions#search_item(l:lnum, l:flags)
+    let l:lnum = notes#motions#get_next_bulletline(a:horizontal, a:backwards)
     " if there aren't enough sections to jump, don't jump at all
     if l:lnum ==# 0
       return
     endif
   endfor
 
+  " get the difference between the line numbers
+  let l:lnum_diff = abs(line('.') - l:lnum)
+
   " Jump to the first column of the target section heading
-  call cursor(l:lnum, 1)
+  " We use 'j' and 'k' here to retain the cursor position even for
+  " subsequent jumps.
+  let l:direction = a:backwards ? 'k' : 'j'
+  execute 'normal! ' . string(l:lnum_diff) . l:direction
 endfunction
 
 
@@ -94,8 +101,6 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
 
   while v:true
     let l:lnum = search(s:regex_bulletline, l:search_flags)
-    echom s:regex_bulletline ' . ' l:search_flags . ' ' . ' >> ' . l:lnum
-    echom foldlevel(l:lnum) . ' :: ' . l:target_foldlevel
 
     if l:lnum ==# 0
       " if there is not search result anymore, there is no matching line

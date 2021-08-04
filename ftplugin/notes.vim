@@ -35,12 +35,18 @@ set cpo&vim
   " Navigation ----------------------------------------------------------- {{{
 
     " Jump between adjacent section headings
-    nnoremap <buffer> <Plug>(NotesNextItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'n', v:false)<cr>
-    onoremap <buffer> <Plug>(NotesNextItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'o', v:false)<cr>
-    xnoremap <buffer> <Plug>(NotesNextItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'v', v:false)<cr>
-    nnoremap <buffer> <Plug>(NotesPrevItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'n', v:true)<cr>
-    onoremap <buffer> <Plug>(NotesPrevItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'o', v:true)<cr>
-    xnoremap <buffer> <Plug>(NotesPrevItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'v', v:true)<cr>
+    nnoremap <buffer> <Plug>(NotesNextItem)       :<c-u>call notes#motions#jump_to_next_item(v:count1, 'n', v:false, v:false)<cr>
+    onoremap <buffer> <Plug>(NotesNextItem)       :<c-u>call notes#motions#jump_to_next_item(v:count1, 'o', v:false, v:false)<cr>
+    xnoremap <buffer> <Plug>(NotesNextItem)       :<c-u>call notes#motions#jump_to_next_item(v:count1, 'v', v:false, v:false)<cr>
+    nnoremap <buffer> <Plug>(NotesPrevItem)       :<c-u>call notes#motions#jump_to_next_item(v:count1, 'n', v:false, v:true)<cr>
+    onoremap <buffer> <Plug>(NotesPrevItem)       :<c-u>call notes#motions#jump_to_next_item(v:count1, 'o', v:false, v:true)<cr>
+    xnoremap <buffer> <Plug>(NotesPrevItem)       :<c-u>call notes#motions#jump_to_next_item(v:count1, 'v', v:false, v:true)<cr>
+    nnoremap <buffer> <Plug>(NotesNextDeeperItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'n', v:true,  v:false)<cr>
+    onoremap <buffer> <Plug>(NotesNextDeeperItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'o', v:true,  v:false)<cr>
+    xnoremap <buffer> <Plug>(NotesNextDeeperItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'v', v:true,  v:false)<cr>
+    nnoremap <buffer> <Plug>(NotesNextHigherItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'n', v:true,  v:true)<cr>
+    onoremap <buffer> <Plug>(NotesNextHigherItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'o', v:true,  v:true)<cr>
+    xnoremap <buffer> <Plug>(NotesNextHigherItem) :<c-u>call notes#motions#jump_to_next_item(v:count1, 'v', v:true,  v:true)<cr>
     " TODO: Allow disabling of mappings
     nmap <buffer> ]] <Plug>(NotesNextItem)
     omap <buffer> ]] <Plug>(NotesNextItem)
@@ -48,6 +54,12 @@ set cpo&vim
     nmap <buffer> [[ <Plug>(NotesPrevItem)
     omap <buffer> [[ <Plug>(NotesPrevItem)
     xmap <buffer> [[ <Plug>(NotesPrevItem)
+    nmap <buffer> ]} <Plug>(NotesNextDeeperItem)
+    omap <buffer> ]} <Plug>(NotesNextDeeperItem)
+    xmap <buffer> ]} <Plug>(NotesNextDeeperItem)
+    nmap <buffer> [{ <Plug>(NotesNextHigherItem)
+    omap <buffer> [{ <Plug>(NotesNextHigherItem)
+    xmap <buffer> [{ <Plug>(NotesNextHigherItem)
 
   " END Navigation }}}
 

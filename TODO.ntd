@@ -19,25 +19,25 @@ File Structure
 Commands
 ========
 
-| Command              | n       | v | i   | Action                                                                  |
-|----------------------+---------+---+-----+-------------------------------------------------------------------------|
-| NoteAddSection       |         |   |     | Add new section header                                                  |
-| NoteNextAction       | S-→     |   | S-→ | Select next action type                                                 |
-| NotePrevAction       | S-←     |   | S-← | Select prev action type                                                 |
-| NoteRaisePrio        | S-↑     |   | S-↑ | Raise prio of current bullet line                                       |
-| NoteLowerPrio        | S-↓     |   | S-↓ | Lower prio of current bullet line                                       |
-| NotePromote          | >>      | > | C-t | Promote current line(s) (shift left)                                    |
-| NoteDemote           | <<      | < | C-d | Demote current line(s) (shift right)                                    |
-| NotePromoteRecursive |         |   |     | Promote current line(s) + all subitems                                  |
-| NoteDemoteRecursive  |         |   |     | Demote current line(s) + all subitems                                   |
-| NoteCheckBox         | C-Space |   |     | Check/Uncheck checkbox                                                  |
-| NoteArchive          |         |   |     | Archive current item                                                    |
-| NoteJumpToNext       | ]]      |   |     | Jump to next element on same level                                      |
-| NoteJumpToPrev       | [[      |   |     | Jump to prev element on same level                                      |
-| NoteJumpToNext       | ]}      |   |     | Jump to next element below this one                                     |
-| NoteJumpToPrev       | [{      |   |     | Jump to parent element                                                  |
-| NoteReformat         |         |   |     | Reformat current bulletline (order elements (?), push Tags to column x) |
-| NoteHelp             | g?      |   |     | Display syntax help                                                     |
+| Command              | n       | v  | i   | Action                                                                  |
+|----------------------+---------+----+-----+-------------------------------------------------------------------------|
+| NoteAddSection       |         |    |     | Add new section header                                                  |
+| NoteNextAction       | S-→     |    | S-→ | Select next action type                                                 |
+| NotePrevAction       | S-←     |    | S-← | Select prev action type                                                 |
+| NoteRaisePrio        | S-↑     |    | S-↑ | Raise prio of current bullet line                                       |
+| NoteLowerPrio        | S-↓     |    | S-↓ | Lower prio of current bullet line                                       |
+| NotePromote          | >>      | >  | C-t | Promote current line(s) (shift left)                                    |
+| NoteDemote           | <<      | <  | C-d | Demote current line(s) (shift right)                                    |
+| NotePromoteRecursive |         |    |     | Promote current line(s) + all subitems                                  |
+| NoteDemoteRecursive  |         |    |     | Demote current line(s) + all subitems                                   |
+| NoteCheckBox         | C-Space |    |     | Check/Uncheck checkbox                                                  |
+| NoteArchive          |         |    |     | Archive current item                                                    |
+| NoteJumpToNext       | ]]      | ]] |     | Jump to next element on same level                                      |
+| NoteJumpToPrev       | [[      | [[ |     | Jump to prev element on same level                                      |
+| NoteJumpToNext       | ]}      | ]} |     | Jump to next element below this one                                     |
+| NoteJumpToPrev       | [{      | [{ |     | Jump to parent element                                                  |
+| NoteReformat         |         |    |     | Reformat current bulletline (order elements (?), push Tags to column x) |
+| NoteHelp             | g?      |    |     | Display syntax help                                                     |
 
 
 Textobjects
