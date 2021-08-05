@@ -65,7 +65,7 @@ TODO: "A-" should be usable to /extend/ the selection. Every "A-" should select 
 
 Syntax highlighting
 ===================
-* TODO Refine colors
+* [o] TODO Refine colors
   - [x] Sane default colors
   - [ ] Support for gruvbox
   - [ ] Differentiate more between action items
@@ -98,5 +98,4 @@ Complementing plugins
 =====================
 - dhruvasagar/vim-table-mode
 - dkarter/bullets.vim
-
 
