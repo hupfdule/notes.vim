@@ -53,6 +53,15 @@ Textobjects
  | paragraph     | Everything below a Bulletline that is not a bulletline itself                         |
  | Tag           | :Tag: at the end of a Bulletline                                                      |
 
+| Textobject | Name          | Description                                                                                                   |
+|------------+---------------+---------------------------------------------------------------------------------------------------------------|
+| i=         | inner section | The content of a section after its header up to the next (or the end of the file)                             |
+| a=         | a section     | Like 'i=', but including the section header                                                                   |
+| i-         | inner bullet  | The content of a bulletline (with all subitems) up to the next one on the same level (or the end of the file) |
+| a-         | a bullet      | Like 'i-', but including the bullet itself                                                                    |
+| A-         | around bullet | Like 'a-', but including the /surrounding/ bullet even if the current line is a bulletline                      |
+TODO: "A-" should be usable to /extend/ the selection. Every "A-" should select the next wrapping bulletline
+
 
 Syntax highlighting
 ===================

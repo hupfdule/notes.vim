@@ -99,6 +99,17 @@ set cpo&vim
 " END Commands }}}
 
 " Text objects =========================================================== {{{
+
+  xnoremap <buffer> <silent> i= :<C-U>call notes#textobjects#section('i', v:true)<CR>
+  onoremap <buffer> <silent> i= :<C-U>call notes#textobjects#section('i', v:false)<CR>
+  xnoremap <buffer> <silent> a= :<C-U>call notes#textobjects#section('a', v:true)<CR>
+  onoremap <buffer> <silent> a= :<C-U>call notes#textobjects#section('a', v:false)<CR>
+
+  xnoremap <buffer> <silent> i- :<C-U>call notes#textobjects#bullet_item('i', v:true)<CR>
+  onoremap <buffer> <silent> i- :<C-U>call notes#textobjects#bullet_item('i', v:false)<CR>
+  xnoremap <buffer> <silent> a- :<C-U>call notes#textobjects#bullet_item('a', v:true)<CR>
+  onoremap <buffer> <silent> a- :<C-U>call notes#textobjects#bullet_item('a', v:false)<CR>
+
 " END Text objects }}}
 
 let &cpo = s:save_cpo
