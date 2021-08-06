@@ -7,6 +7,11 @@ let s:regex_bulletline .= '\s*'                 " an arbitrary number of whitesp
 let s:regex_bulletline .= '[\-\*]'              " then either a dash (-) or an asterisk (*)
 let s:regex_bulletline .= '\s'                  " a mandatory whitespace character
 
+let s:regex_section_underline  = '^'                 " at the start of the line
+let s:regex_section_underline .= '=\+'               " at least one equals sign (the underline char)
+let s:regex_section_underline .= '\s*'               " and optional whitespace
+let s:regex_section_underline .= '$'                 " until the end of the line
+
 ""
 " Jump to the next/previous item of the same level.
 "
@@ -39,11 +44,12 @@ function! notes#motions#jump_to_next_item(count, mode, horizontal, backwards) ab
   let l:lnum = line('.')
   for i in range(1, a:count)
     " TODO: Implement the actual seach logic
-    " TODO: Differentiate here whether we are on a section heading or a bullet line?
-    "       Or can we ignore this and only respect the indent level?
-    "let l:lnum = notes#motions#search_item(l:lnum, l:flags)
-    let l:lnum = notes#motions#get_next_bulletline(a:horizontal, a:backwards)
-    " if there aren't enough sections to jump, don't jump at all
+    if getline('.') =~# s:regex_section_underline || getline(line('.') + 1) =~# s:regex_section_underline
+      let l:lnum = notes#motions#get_next_section_heading(a:backwards)
+    else
+      let l:lnum = notes#motions#get_next_bulletline(a:horizontal, a:backwards)
+    endif
+    " if there aren't enough items to jump to, don't jump at all
     if l:lnum ==# 0
       return
     endif
@@ -89,7 +95,7 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
     endif
   endif
   " if the current line is not a bulletline, consider it to belong below
-  " the previous bulletline. There we shift the foldlevel for that purpose.
+  " the previous bulletline. Therefore we shift the foldlevel for that purpose.
   if l:target_foldlevel > 0 && getline('.') !~# s:regex_bulletline
     let l:target_foldlevel -= 1
   endif
@@ -117,6 +123,37 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
   endwhile
 
   " restore the original cursor position
+  call setpos('.', l:old_pos)
+
+  return l:lnum
+endfunction
+
+
+""
+" Get the line number of the next/previous section heading.
+"
+" If {backwards} is 'v:true' the search will be done backwards.
+"
+" @param {backwards} if 'v:true' the search will be executed backwards
+"
+" @returns the line number of the underline of the next section headingi
+"          or 0 if no further section heading could be found.
+function! notes#motions#get_next_section_heading(backwards) abort
+  let l:search_flags = 'nW'
+  if a:backwards
+    let l:search_flags .= 'b'
+  endif
+
+  let l:old_pos = getcurpos()
+
+  " If we are the text /above/ the underline, we need to start searching
+  " /after/ that underline.
+  if getline(line('.') + 1) =~# s:regex_section_underline
+    call cursor(line('.') + 1, 0)
+  endif
+
+  let l:lnum = search(s:regex_section_underline, l:search_flags)
+
   call setpos('.', l:old_pos)
 
   return l:lnum
