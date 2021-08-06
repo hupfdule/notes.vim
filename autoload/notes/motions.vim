@@ -43,11 +43,16 @@ function! notes#motions#jump_to_next_item(count, mode, horizontal, backwards) ab
 
   let l:lnum = line('.')
   for i in range(1, a:count)
-    " TODO: Implement the actual seach logic
-    if getline('.') =~# s:regex_section_underline || getline(line('.') + 1) =~# s:regex_section_underline
+    if !a:horizontal && (getline('.') =~# s:regex_section_underline || getline(line('.') + 1) =~# s:regex_section_underline)
+      " search for section headings only vertically
       let l:lnum = notes#motions#get_next_section_heading(a:backwards)
     else
       let l:lnum = notes#motions#get_next_bulletline(a:horizontal, a:backwards)
+      " if we are searching for the next higher level and there is no more
+      " bullet line, try to find the previous section heading
+      if l:lnum is 0 && a:horizontal && a:backwards
+        let l:lnum = notes#motions#get_next_section_heading(a:backwards)
+      endif
     endif
     " if there aren't enough items to jump to, don't jump at all
     if l:lnum ==# 0
@@ -85,7 +90,8 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
     let l:search_flags .= 'b'
   endif
 
-  let l:target_foldlevel = foldlevel('.')
+  let l:current_foldlevel = foldlevel('.')
+  let l:target_foldlevel = l:current_foldlevel
   " adjust the target foldlevel according to the levelshift
   if a:horizontal
     if a:backwards
@@ -94,9 +100,12 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
       let l:target_foldlevel += 1
     endif
   endif
-  " if the current line is not a bulletline, consider it to belong below
+  " if the current line is not a bulletline and not a section heading, consider it to belong below
   " the previous bulletline. Therefore we shift the foldlevel for that purpose.
-  if l:target_foldlevel > 0 && getline('.') !~# s:regex_bulletline
+  if l:target_foldlevel > 0
+      \ && getline('.') !~# s:regex_bulletline
+      \ && getline('.') !~# s:regex_section_underline
+      \ && getline(line('.') + 1) !~# s:regex_section_underline
     let l:target_foldlevel -= 1
   endif
 
@@ -110,6 +119,16 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
 
     if l:lnum ==# 0
       " if there is not search result anymore, there is no matching line
+      break
+    elseif a:horizontal && !a:backwards && l:lnum !=# 0 && foldlevel(l:lnum) ==# l:current_foldlevel
+      " When searching for deeper items: if there is a match with /the same/
+      " foldlevel, stop searching.  There are no more subitems then.
+      let l:lnum = 0
+      break
+    elseif !a:horizontal && l:lnum !=# 0 && foldlevel(l:lnum) <# l:target_foldlevel
+      " When searching for items in the same level, don't jump across
+      " parent items
+      let l:lnum = 0
       break
     elseif l:lnum !=# 0 && foldlevel(l:lnum) ==# l:target_foldlevel
       " if there is a match and its foldlevel matches the current foldlevel,
