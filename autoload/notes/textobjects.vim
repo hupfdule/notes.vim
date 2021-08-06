@@ -1,16 +1,3 @@
-" FIXME: Should we reuse this regex? Maybe have different regexes for
-"        - bulletline (base)
-"        - bulletline with checkbox
-let s:regex_bulletline  = '^'                   " At the start of the line
-let s:regex_bulletline .= '\s*'                 " an arbitrary number of whitespace (as a bullet line can be indented)
-let s:regex_bulletline .= '[\-\*]'              " then either a dash (-) or an asterisk (*)
-let s:regex_bulletline .= '\s'                  " a mandatory whitespace character
-
-let s:regex_section_underline  = '^'                 " at the start of the line
-let s:regex_section_underline .= '=\+'               " at least one equals sign (the underline char)
-let s:regex_section_underline .= '\s*'               " and optional whitespace
-let s:regex_section_underline .= '$'                 " until the end of the line
-
 ""
 " Text object for bulletlines (including all subitems).
 "
@@ -35,12 +22,12 @@ function! notes#textobjects#bullet_item(scope, visual) abort
   "        "dolores" + "mitanes".
   let l:foldlevel = foldlevel('.')
 
-  if getline('.') =~# s:regex_bulletline
+  if getline('.') =~# g:notes#regex#bulletline_base
     " if the current line is a bulletline, it is the bulletline we are searching for
     let l:bulletline = line('.')
   else
     " otherwise we search for it backwards
-    let l:bulletline = search(s:regex_bulletline, 'Wbn')
+    let l:bulletline = search(g:notes#regex#bulletline_base, 'Wbn')
 
     " if there is not bulletline, there is no such textobject
     if l:bulletline is 0
@@ -98,15 +85,15 @@ endfunction
 "           is actually not used).
 function! notes#textobjects#section(scope, visual) abort
   " search the section underline
-  if getline('.') =~# s:regex_section_underline
+  if getline('.') =~# g:notes#regex#section_underline
     " if the cursor is on an underline this is the start of the textobject
     let l:prev_underline = line('.')
-  elseif getline('.') =~# '^\S\+' && getline(line('.') + 1) =~# s:regex_section_underline
+  elseif getline('.') =~# '^\S\+' && getline(line('.') + 1) =~# g:notes#regex#section_underline
     " if the cursor is on the text of a section heading, the start is its underline
     let l:prev_underline = line('.') + 1
   else
     " else search for it backwards
-    let l:prev_underline = search(s:regex_section_underline, 'Wbn')
+    let l:prev_underline = search(g:notes#regex#section_underline, 'Wbn')
   endif
 
   " now search for the end of the section
@@ -116,7 +103,7 @@ function! notes#textobjects#section(scope, visual) abort
   " section
   let l:old_pos = getcurpos()                                    " save cursor position
   call cursor(max([l:prev_underline + 1, line('.')]), 0)         " jump after the starting underline
-  let l:next_underline = search(s:regex_section_underline, 'Wn')
+  let l:next_underline = search(g:notes#regex#section_underline, 'Wn')
   call setpos('.', l:old_pos)                                    " restore cursor position
 
   if a:scope ==# 'i'

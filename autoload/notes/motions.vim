@@ -1,17 +1,3 @@
-" Regex for identifying a bullet line
-" FIXME: Should we reuse this regex? Maybe have different regexes for
-"        - bulletline (base)
-"        - bulletline with checkbox
-let s:regex_bulletline  = '^'                   " At the start of the line
-let s:regex_bulletline .= '\s*'                 " an arbitrary number of whitespace (as a bullet line can be indented)
-let s:regex_bulletline .= '[\-\*]'              " then either a dash (-) or an asterisk (*)
-let s:regex_bulletline .= '\s'                  " a mandatory whitespace character
-
-let s:regex_section_underline  = '^'                 " at the start of the line
-let s:regex_section_underline .= '=\+'               " at least one equals sign (the underline char)
-let s:regex_section_underline .= '\s*'               " and optional whitespace
-let s:regex_section_underline .= '$'                 " until the end of the line
-
 ""
 " Jump to the next/previous item of the same level.
 "
@@ -43,7 +29,7 @@ function! notes#motions#jump_to_next_item(count, mode, horizontal, backwards) ab
 
   let l:lnum = line('.')
   for i in range(1, a:count)
-    if !a:horizontal && (getline('.') =~# s:regex_section_underline || getline(line('.') + 1) =~# s:regex_section_underline)
+    if !a:horizontal && (getline('.') =~# g:notes#regex#section_underline || getline(line('.') + 1) =~# g:notes#regex#section_underline)
       " search for section headings only vertically
       let l:lnum = notes#motions#get_next_section_heading(a:backwards)
     else
@@ -103,9 +89,9 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
   " if the current line is not a bulletline and not a section heading, consider it to belong below
   " the previous bulletline. Therefore we shift the foldlevel for that purpose.
   if l:target_foldlevel > 0
-      \ && getline('.') !~# s:regex_bulletline
-      \ && getline('.') !~# s:regex_section_underline
-      \ && getline(line('.') + 1) !~# s:regex_section_underline
+      \ && getline('.') !~# g:notes#regex#bulletline_base
+      \ && getline('.') !~# g:notes#regex#section_underline
+      \ && getline(line('.') + 1) !~# g:notes#regex#regex_section_underline
     let l:target_foldlevel -= 1
   endif
 
@@ -115,7 +101,7 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
   call cursor(l:old_pos[1], 1)
 
   while v:true
-    let l:lnum = search(s:regex_bulletline, l:search_flags)
+    let l:lnum = search(g:notes#regex#bulletline_base, l:search_flags)
 
     if l:lnum ==# 0
       " if there is not search result anymore, there is no matching line
@@ -167,11 +153,11 @@ function! notes#motions#get_next_section_heading(backwards) abort
 
   " If we are the text /above/ the underline, we need to start searching
   " /after/ that underline.
-  if getline(line('.') + 1) =~# s:regex_section_underline
+  if getline(line('.') + 1) =~# g:notes#regex#section_underline
     call cursor(line('.') + 1, 0)
   endif
 
-  let l:lnum = search(s:regex_section_underline, l:search_flags)
+  let l:lnum = search(g:notes#regex#section_underline, l:search_flags)
 
   call setpos('.', l:old_pos)
 

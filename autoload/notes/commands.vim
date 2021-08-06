@@ -1,12 +1,3 @@
-" Regex for identifying a bullet line
-let s:regex_bulletline  = '^'                   " At the start of the line
-let s:regex_bulletline .= '\s*'                 " an arbitrary number of whitespace (as a bullet line can be indented)
-let s:regex_bulletline .= '[\-\*]'              " then either a dash (-) or an asterisk (*)
-let s:regex_bulletline .= '\s'                  " a mandatory whitespace character
-let s:regex_bulletline .= '\('                  " optionally
-let s:regex_bulletline .=   '\[[x\ ]\]'         " an empty or filled bracket ([ ] or [x])
-let s:regex_bulletline .=   '\s'                " with another mandatory whitespace
-let s:regex_bulletline .= '\)\?'
 
 " FIXME: Can we specify these buffer locally? This would allow such a
 "        modline like emacs to define the keywords in the file itself
@@ -30,7 +21,7 @@ let s:priorities = ['[#C]', '[#B]', '[#A]']
 function! notes#commands#next_action_keyword(backwards) abort
   " Abort if the current line is not a bullet line
   let l:line = getline('.')
-  if l:line !~# s:regex_bulletline
+  if l:line !~# g:notes#regex#bulletline
     return
   endif
 
@@ -45,7 +36,7 @@ function! notes#commands#next_action_keyword(backwards) abort
   " Do the actual replacement/deletion/addition of the action keyword
   if l:current_keyword ==# ['', -1, -1]
     " If no current keyword is found, add the first/last one
-    let l:insertpos = matchend(getline('.'), s:regex_bulletline)
+    let l:insertpos = matchend(getline('.'), g:notes#regex#bulletline)
     let l:next_keyword = get(s:action_keywords, (a:backwards ? -1 : 0))
     let l:new_line = getline('.')[0:l:insertpos-1] . l:next_keyword . ' ' . getline('.')[l:insertpos:]
   else
@@ -87,7 +78,7 @@ endfunction
 function! notes#commands#next_priority(backwards) abort
   " Abort if the current line is not a bullet line
   let l:line = getline('.')
-  if l:line !~# s:regex_bulletline
+  if l:line !~# g:notes#regex#bulletline
     return
   endif
 
@@ -104,7 +95,7 @@ function! notes#commands#next_priority(backwards) abort
     " If no current priority is found, add the lowest/highest one
     " Inser the prio either directly after the bullet point or after the
     " action keyword (if any exists)
-    let l:insertpos = matchend(getline('.'), s:regex_bulletline)
+    let l:insertpos = matchend(getline('.'), g:notes#regex#bulletline)
     for keyword in s:action_keywords
       let l:insertpos2 = matchend(getline('.'),  '^\s*' . keyword . '\s*', l:insertpos)
       if l:insertpos2 > -1
@@ -136,4 +127,23 @@ function! notes#commands#next_priority(backwards) abort
   endif
 
   call setline('.', l:new_line)
+endfunction
+
+
+""
+" Converts the current line to a section heading.
+"
+" If the current line contains text and is not underlined with a section
+" underline, this underline is added.
+"
+" If the current line already is a section heading, its underline is
+" adjusted to the same length as the section heading text.
+"
+" If the current line already is a section heading with a an underline that
+" matches the length of the section heading text, the underline is removed.
+" FIXME: Really do this?
+"
+" If the current line is a bullet line, this does nothing.
+function! notes#commands#add_section() abort
+
 endfunction
