@@ -12,8 +12,10 @@ syntax match   notesBullet         /^\s*\zs\(-\|\*\)\( \[[x\ ]\]\)\?\ze\s/
 "syntax keyword notesActionTODO     TODO WORK     contained
 syntax keyword notesActionTODO     TODO containedin=notesSectionHeading
 syntax keyword notesActionWORK     WORK     containedin=notesSectionHeading
+syntax keyword notesActionHOLD     HOLD     containedin=notesSectionHeading
+syntax keyword notesActionFDBK     FDBK     containedin=notesSectionHeading
 syntax keyword notesActionDONE     DONE CANC     containedin=notesBulletLine
-syntax cluster notesAction         contains=notesActionTODO,notesActionDONE
+syntax cluster notesAction         contains=notesActionTODO,notesActionWORK,notesActionHOLD,notesActionFDBK,notesActionDONE
 "syntax match   notesPrio           /\[#[ABC]\]/  containedin=notesBulletLine,notesBulletLineA
 syntax match   notesTag            /:\S\+:$/     containedin=notesBulletLine
 syntax match   notesBulletLine     /^\s*\(-\|\*\)\( \[ \]\)\?\s/ contains=notesBullet,@notesAction,notesPrio,notesTag
@@ -34,6 +36,8 @@ highlight notesSectionHeading term=bold      cterm=bold      gui=bold ctermfg=da
 highlight notesBullet         term=bold      cterm=bold      gui=bold ctermfg=cyan         guifg=cyan
 highlight notesActionTODO     term=bold      cterm=bold      gui=bold ctermfg=darkred      guifg=darkred
 highlight notesActionWORK     term=bold      cterm=bold      gui=bold ctermfg=red          guifg=red
+highlight notesActionHOLD     term=bold      cterm=bold      gui=bold ctermfg=cyan         guifg=cyan
+highlight notesActionFDBK     term=bold      cterm=bold      gui=bold ctermfg=lightblue    guifg=lightblue
 highlight notesActionDONE     term=bold      cterm=bold      gui=bold ctermfg=green        guifg=green
 highlight notesPrioA          term=bold      cterm=bold      gui=bold ctermfg=lightmagenta guifg=lightmagenta
 highlight notesPrioB          term=bold      cterm=bold      gui=bold ctermfg=magenta      guifg=magenta

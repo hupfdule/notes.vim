@@ -39,6 +39,12 @@ function! notes#motions#jump_to_next_item(count, mode, horizontal, backwards) ab
       if l:lnum is 0 && a:horizontal && a:backwards
         let l:lnum = notes#motions#get_next_section_heading(a:backwards)
       endif
+
+      " If we are searching for the next sibling in foldlevel 0 and there is none, jump to
+      " the next section heading
+      if l:lnum is 0 && foldlevel(l:lnum) is 0 && !a:horizontal && !a:backwards
+        let l:lnum = notes#motions#get_next_section_heading(a:backwards)
+      endif
     endif
     " if there aren't enough items to jump to, don't jump at all
     if l:lnum ==# 0
@@ -91,7 +97,7 @@ function! notes#motions#get_next_bulletline(horizontal, backwards) abort
   if l:target_foldlevel > 0
       \ && getline('.') !~# g:notes#regex#bulletline_base
       \ && getline('.') !~# g:notes#regex#section_underline
-      \ && getline(line('.') + 1) !~# g:notes#regex#regex_section_underline
+      \ && getline(line('.') + 1) !~# g:notes#regex#section_underline
     let l:target_foldlevel -= 1
   endif
 

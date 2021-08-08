@@ -134,3 +134,34 @@ function! notes#textobjects#section(scope, visual) abort
   call cursor(l:end, 0)
   normal! $
 endfunction
+
+
+""
+" Text object for tags.
+"
+" {scope}: i to include everything between the surrounding colons
+"            (but including any inner, separating colons).
+"          a like 'i', but including the outer colons.
+" {visual}: whether this method was called from visual mode (this parameter
+"           is actually not used).
+function! notes#textobjects#tags(scope, visual) abort
+  let l:tags_part = matchstrpos(getline('.'), g:notes#regex#tags_in_bulletline)
+
+  if l:tags_part ==# ['', -1, -1]
+    return
+  endif
+
+  if a:scope ==# 'i'
+    let l:start = l:tags_part[1] + 1
+    let l:end   = l:tags_part[2] - 1
+  elseif a:scope ==# 'a'
+    let l:start = l:tags_part[1]
+    let l:end   = l:tags_part[2]
+  else
+    throw 'Notes001: Invalid scope: ' . a:scope . '. Only "i" and "a" are supported'
+  endif
+
+  call cursor(line('.'), l:start + 1)
+  normal! v
+  call cursor(line('.'), l:end)
+endfunction

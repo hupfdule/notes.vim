@@ -1,19 +1,19 @@
 File Structure
 ==============
-- Section headers
-  - CLR Allow subsections?
-    → Not at the moment. Maybe later.
-- Bullet points
-  - with action items (TODO, DONE, …)
-  - with Priority
-  - with Tags
-  - with Checkboxes
-- Textblocks
-- Inline formatting
-  - *bold*
-  - /italic/
-  - _underlined_
-- Indentation defines subitems
+  - Section headers
+    - CLR Allow subsections?
+      → Not at the moment. Maybe later.
+  - Bullet points
+    - with action items (TODO, DONE, …)
+    - with Priority
+    - with Tags
+    - with Checkboxes
+  - Textblocks
+  - Inline formatting
+    - *bold*
+    - /italic/
+    - _underlined_
+  - Indentation defines subitems
 
 
 Commands
@@ -32,6 +32,7 @@ Commands
 | NoteDemoteRecursive  |         |    |     | Demote current line(s) + all subitems                                   |
 | NoteCheckBox         | C-Space |    |     | Check/Uncheck checkbox                                                  |
 | NoteArchive          |         |    |     | Archive current item                                                    |
+| NoteArchiveDONE      |         |    |     | Archive all items marked as DONE or CANC                                |
 | NoteJumpToNext       | ]]      | ]] |     | Jump to next element on same level                                      |
 | NoteJumpToPrev       | [[      | [[ |     | Jump to prev element on same level                                      |
 | NoteJumpToNext       | ]}      | ]} |     | Jump to next element below this one                                     |
@@ -59,7 +60,9 @@ Textobjects
 | a=         | a section     | Like 'i=', but including the section header                                                                   |
 | i-         | inner bullet  | The content of a bulletline (with all subitems) up to the next one on the same level (or the end of the file) |
 | a-         | a bullet      | Like 'i-', but including the bullet itself                                                                    |
-| A-         | around bullet | Like 'a-', but including the /surrounding/ bullet even if the current line is a bulletline                      |
+| A-         | around bullet | Like 'a-', but including the /surrounding/ bullet even if the current line is a bulletline                    |
+| i:         | inner tags    | The tags content between the enclosing colons                                                                 |
+| a:         | all tags      | Like 'i-', but including the enclosing colons                                                                 |
 TODO: "A-" should be usable to /extend/ the selection. Every "A-" should select the next wrapping bulletline
 
 

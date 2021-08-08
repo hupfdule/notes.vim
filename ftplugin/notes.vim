@@ -85,8 +85,18 @@ set cpo&vim
     nnoremap <buffer> <Plug>(NotesNextPrio) :call notes#commands#next_priority(v:false)<cr>
     nnoremap <buffer> <Plug>(NotesPrevPrio) :call notes#commands#next_priority(v:true)<cr>
     " TODO: Allow disabling of mappings
-    nmap <buffer> <S-Up> <Plug>(NotesNextPrio)
+    nmap <buffer> <S-Up>    <Plug>(NotesNextPrio)
     nmap <buffer> <S-Down>  <Plug>(NotesPrevPrio)
+
+    nnoremap <buffer> <Plug>(NotesAddSection) :call notes#commands#add_section()<cr>
+    " TODO: Allow disabling of mappings
+    nmap <buffer> g= <Plug>(NotesAddSection)
+
+    nnoremap <buffer> <Plug>(NotesReformatLine) :set opfunc=notes#commands#reformat_lines<CR>g@
+    xnoremap <buffer> <Plug>(NotesReformatLine) :call notes#commands#reformat_lines('')<cr>
+    " TODO: Allow disabling of mappings
+    nmap <buffer> g: <Plug>(NotesReformatLine)
+    xmap <buffer> g: <Plug>(NotesReformatLine)
 
   " END Editing }}}
 
@@ -109,6 +119,11 @@ set cpo&vim
   onoremap <buffer> <silent> i- :<C-U>call notes#textobjects#bullet_item('i', v:false)<CR>
   xnoremap <buffer> <silent> a- :<C-U>call notes#textobjects#bullet_item('a', v:true)<CR>
   onoremap <buffer> <silent> a- :<C-U>call notes#textobjects#bullet_item('a', v:false)<CR>
+
+  xnoremap <buffer> <silent> i: :<C-U>call notes#textobjects#tags('i', v:true)<CR>
+  onoremap <buffer> <silent> i: :<C-U>call notes#textobjects#tags('i', v:false)<CR>
+  xnoremap <buffer> <silent> a: :<C-U>call notes#textobjects#tags('a', v:true)<CR>
+  onoremap <buffer> <silent> a: :<C-U>call notes#textobjects#tags('a', v:false)<CR>
 
 " END Text objects }}}
 
