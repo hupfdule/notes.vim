@@ -21,7 +21,6 @@ Commands
 
 | Command              | n       | v  | i   | Action                                                                  |
 |----------------------+---------+----+-----+-------------------------------------------------------------------------|
-| NoteAddSection       |         |    |     | Add new section header                                                  |
 | NoteNextAction       | S-→     |    | S-→ | Select next action type                                                 |
 | NotePrevAction       | S-←     |    | S-← | Select prev action type                                                 |
 | NoteRaisePrio        | S-↑     |    | S-↑ | Raise prio of current bullet line                                       |
@@ -37,7 +36,8 @@ Commands
 | NoteJumpToPrev       | [[      | [[ |     | Jump to prev element on same level                                      |
 | NoteJumpToNext       | ]}      | ]} |     | Jump to next element below this one                                     |
 | NoteJumpToPrev       | [{      | [{ |     | Jump to parent element                                                  |
-| NoteReformat         |         |    |     | Reformat current bulletline (order elements (?), push Tags to column x) |
+| NoteAddSection       | g=      |    |     | Add new section header                                                  |
+| NoteReformat         | g:      | g: |     | Reformat current bulletline (order elements (?), push Tags to column x) |
 | NoteHelp             | g?      |    |     | Display syntax help                                                     |
 
 
@@ -96,6 +96,43 @@ Folding
   Also it would allow us to fold leading and trailing empty lines along
   with the actual folds content. The indent fold methods leaves these
   intact and does not fold them.
+
+Notifications
+=============
+
+- Allow setting dates to action items
+  - Beginning of action: When to start acting on the item
+  - Deadline: When the item has to be finished
+  - Reminder: When to popup a notification for this item (maybe relative to the Beginning/Deadline?
+  - Resubmission: A form of reminder for FDBK items
+  - Multiple dates should be possible (e.g. Beginning + Deadline + multiple Reminders)
+  - Mapping/Command for executing outstanding notifications
+    - How to display them? Use some notification API?
+  - Mapping/Command for showing the items in a new buffer, sorted by next
+    action date (optionally additionally sorted by section first)
+  - Dates always apply to all subitems.
+  - Allow Dates for Sections, too? Would be helpful if Section==Project.
+    But then again it would make more sense to have a subitem for that
+    purpose. Maybe 2 or 3 might be necessary anyway.
+  Example:
+    - TODO Make some Frobnitz out of a Zouss
+      S:<2020-05-18>,D:<2020-08-30>,N:D-30d,(¿N:(D-S)*33%?)
+    - FDBK Let Dieter do something
+      R:<2020-10-31>
+
+Yet todo
+========
+
+- Speed up 'g=' (add section). Why is it so slow?
+- Allow specifying valid action items via configuration (either globally or
+  even in the  file (like org-mode)).
+- Respect configuration of bullets.vim regarding valid bullet points and
+  percentage markers.
+- Archive items.
+- Reformat should remember the cursor position. Otherwise the cursor would
+  be moved due to the visual selection.
+- Allow specifying whether to right-align or left-align (or center-align?) tags.
+  Looks a bit strange if it is right-aligned…
 
 Complementing plugins
 =====================

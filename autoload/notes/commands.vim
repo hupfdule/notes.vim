@@ -242,9 +242,18 @@ function! notes#commands#reformat_line(lnum) range abort
     " remove all surrounding whitespace from the actual tags
     let l:tags = trim(l:tags_part[1])
     " find the end of the bulletlines text (before the tags)
+    " FIXME: Das hier haut nicht immer hin
     let l:end_of_bulletline = strridx(l:tags_part[0], l:tags_part[1]) - 1
+    " We need to get the byte index. Otherwise we get a wrong result
+    let l:end_of_bulletline = charidx(l:tags_part[0], l:end_of_bulletline)
     " calculate the correct amout of spaces to push the tags up to 'textwidth'
-    let l:no_of_spaces = l:textwidth - len(l:tags) - l:end_of_bulletline
+    if get(g:, 'notes_reformat_tags_alignment', 'left') ==# 'right'
+      " right align if requested
+      let l:no_of_spaces = l:textwidth - len(l:tags) - l:end_of_bulletline - 1
+    else
+      " left align in all other cases (even invalid values of g:notes_reformat_tags_alignment)
+      let l:no_of_spaces = l:textwidth - l:end_of_bulletline - 2
+    endif
     let l:no_of_spaces = max([1, l:no_of_spaces])
     let l:new_tags_part = repeat(' ', l:no_of_spaces) . l:tags
     " prepare the new bulletline

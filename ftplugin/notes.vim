@@ -15,6 +15,21 @@ set cpo&vim
 
 " Options ================================================================ {{{
 
+  ""
+  " Whether to enable mappings (default 1)
+  if !exists('g:notes_enable_mappings')
+    let g:notes_enable_mappings = 1
+  endif
+
+  ""
+  " How to align tags when reformatting lines (default 'left')
+  "
+  " May be set to 'left' or 'right'.
+  "
+  if !exists('g:notes_reformat_tags_alignment')
+    let g:notes_reformat_tags_alignment = 'left'
+  endif
+
 " END Options ============================================================ }}}
 
 " Settings =============================================================== {{{
